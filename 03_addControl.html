@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>控件添加</title>
+    <script src="dist/leaflet/include-leaflet.js"></script>
+    <!-- 引入地图导航插件 -->
+    <link
+      rel="stylesheet"
+      href="./libs/leaflet/plugins/Leaflet.NavBar-master-src/Leaflet.NavBar-master-src/src/Leaflet.NavBar.css"
+    />
+    <script src="./libs/leaflet/plugins/Leaflet.NavBar-master-src/Leaflet.NavBar-master-src/src/Leaflet.NavBar.js"></script>
+    <style>
+      /* 设置页面样式 */
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      // 加载四川省地图
+      let map = L.map("map", {
+        center: { lng: 103.3, lat: 30.36 },
+        zoom: 5,
+        crs: L.CRS.EPSG4326,
+        zoomControl: false, // 禁用默认的缩放控件
+      });
+
+      let url =
+        "http://localhost:8090/iserver/services/map-siChuan-2/rest/maps/%E5%9B%9B%E5%B7%9D%E7%9C%81%401";
+
+      //加载天地图
+      let tianDiTu = new L.supermap.TiandituTileLayer({
+        key: "1c0c6a9566dc8463aac457de4e3bf783",
+        layerType: "img",
+      }).addTo(map);
+
+      //叠加显示
+      let henan = new L.supermap.tiledMapLayer(url, {
+        transparent: true,
+        opacity: 0.8, //图层透明度
+      }).addTo(map);
+
+      //添加缩放控件
+      L.control.zoom().addTo(map);
+      //添加比例尺控件
+      L.control.scale().addTo(map);
+      //添加导航控件
+      L.control.navbar().addTo(map);
+      //添加图层管理控件
+      let baseMaps = {
+        tianDiTu: tianDiTu,
+        henan: henan,
+      };
+      L.control.layers(baseMaps).addTo(map);
+
+      //显示属性
+      L.control
+        .attribution({
+          prefix: "【This is an attribution】",
+        })
+        .addTo(map);
+    </script>
+  </body>
+</html>

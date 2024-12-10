@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>地图</title>
+    <script src="dist/leaflet/include-leaflet.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      // var map = L.map("map", {
+      //   center: { lng: 12409343.7, lat: 3766888.55 },
+      //   zoom: 6,
+      //   crs: L.CRS.EPSG3875,
+      // });
+
+      // var url =
+      //   "http://localhost:8090/iserver/services/map-PopulationAndEconomy/rest/maps/2014%E5%B9%B4%E4%BA%BA%E5%8F%A3%E5%AF%86%E5%BA%A6%E4%B8%93%E9%A2%98%E5%9B%BE";
+      // var henan = new L.supermap.tiledMapLayer(url).addTo(map);
+
+      var map = L.map("map", {
+        center: { lng: 103.3, lat: 30.36 },
+        zoom: 5,
+        crs: L.CRS.EPSG4326,
+      });
+
+      var url =
+        "http://localhost:8090/iserver/services/map-siChuan/rest/maps/%E5%9B%9B%E5%B7%9D%E7%9C%81%401";
+
+      var henan = new L.supermap.tiledMapLayer(url).addTo(map);
+    </script>
+  </body>
+</html>

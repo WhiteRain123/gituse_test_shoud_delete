@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>面积测量</title>
+    <script
+      include="leaflet.draw"
+      src="dist/leaflet/include-leaflet.js"
+    ></script>
+    <script src="dist/leaflet/iclient-leaflet-vue.js"></script>
+    <script src="leaflet_src/Control.Draw.js"></script>
+    <!-- <script
+      include="bootstrap,widgets.alert"
+      src="./js/include-leaflet.js"
+    ></script> -->
+    <script src="./js/widgets.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      //加载四川省地图
+      var map = L.map("map", {
+        center: { lng: 103.3, lat: 30.36 },
+        zoom: 5,
+        crs: L.CRS.EPSG4326,
+      });
+
+      var url =
+        "http://localhost:8090/iserver/services/map-siChuan-2/rest/maps/%E5%9B%9B%E5%B7%9D%E7%9C%81%401";
+
+      new L.supermap.tiledMapLayer(url).addTo(map);
+      initEditView();
+
+      // 地图测量面板
+      function initEditView() {
+        var infoView = L.control({ position: "topright" });
+        infoView.onAdd = function () {
+          var me = this;
+          me._div = L.DomUtil.create("div", "panel panel-primary");
+          me._div.innerHTML =
+            "<div class='panel-heading'>" +
+            "<h5 class='panel-title text-center'>" +
+            "地图测量" +
+            "</h5></div><div class='panel-body content'>" +
+            "<input type='button' class='btn btn-default' value='" +
+            "测面" +
+            "' onclick='MeasureArea()'/>&nbsp;" +
+            "<input type='button' class='btn btn-default' value='" +
+            "清除" +
+            "' onclick='ClearLayer()'/></div>";
+          return me._div;
+        };
+        infoView.addTo(map);
+      }
+
+      var editableLayers = new L.featureGroup();
+      editableLayers.addTo(map);
+
+      function MeasureArea() {
+        //**练习**面积测量
+        editableLayers.clearLayers();
+        var hander = new L.Draw.Polygon(map);
+        hander.enable();
+        map.on(L.Draw.Event.DRAWSTOP, function (e) {
+          var polygon = e.layer;
+          console.log("绘制的多边形:", polygon);
+
+          editableLayers.addLayer(polygon); //把几何对象图形到地图
+          var areaMeasureParam = new L.supermap.MeasureParameters(polygon);
+          new L.supermap.MeasureService(url).measureArea(
+            areaMeasureParam,
+            function (servicesResult, error) {
+              if (error) {
+                console.error("测量服务错误:", error);
+              } else {
+                console.log(servicesResult);
+                var content = "面积：" + serviceResult.result.area + " 平方米";
+                polygon.bindPopup(content).openPopup(polygon.getCenter()); //让图层显示出来
+              }
+            }
+          );
+        });
+      }
+      function ClearLayer() {
+        editableLayers.clearLayers();
+      }
+    </script>
+  </body>
+</html>

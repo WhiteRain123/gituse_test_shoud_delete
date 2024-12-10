@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 引入样式 -->
+    <script src="./dist/leaflet/include-leaflet.js"></script>
+    <title>属性查询</title>
+    <style>
+      /* 设置页面样式 */
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- 加载地图 -->
+    <script>
+      let map = L.map("map", {
+        center: { lng: 103.3, lat: 30.36 },
+        zoom: 5,
+        crs: L.CRS.EPSG4326,
+        zoomControl: false, // 禁用默认的缩放控件
+      });
+
+      let url =
+        "http://localhost:8090/iserver/services/map-siChuan-2/rest/maps/%E5%9B%9B%E5%B7%9D%E7%9C%81%401";
+      new L.supermap.tiledMapLayer(url).addTo(map);
+
+      //   编辑查询条件
+      query();
+      function query() {
+        let param = new L.supermap.QueryBySQLParameters({
+          queryParams: [
+            new L.supermap.FilterParameter({
+              name: "四川省@1",
+              attributeFilter: "name like '%州%'",
+            }),
+          ],
+        });
+        //对地图进行查询并将结果添加到地图
+        new L.supermap.QueryService(url).queryBySQL(param, function (result1) {
+          let result = result1.result;
+          console.log(result);
+
+          L.geoJSON(result.recordsets[0].features).addTo(map);
+        });
+      }
+    </script>
+  </body>
+</html>
