@@ -66,21 +66,21 @@
           <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
           <ul class="layui-nav layui-nav-tree" lay-filter="test">
             <li class="layui-nav-item layui-nav-itemed">
-              <a class="" href="javascript:;">menu group 1</a>
-              <dl class="layui-nav-child">
+              <a class="menuItem" href="01_henan.html">地图加载</a>
+              <!-- <dl class="layui-nav-child">
                 <dd><a href="javascript:;">menu 1</a></dd>
                 <dd><a href="javascript:;">menu 2</a></dd>
                 <dd><a href="javascript:;">menu 3</a></dd>
                 <dd><a href="javascript:;">the links</a></dd>
-              </dl>
+              </dl> -->
             </li>
             <li class="layui-nav-item">
-              <a href="javascript:;">menu group 2</a>
-              <dl class="layui-nav-child">
+              <a class="menuItem"  href="02_overlay.html">地图叠加</a>
+              <!-- <dl class="layui-nav-child">
                 <dd><a href="javascript:;">list 1</a></dd>
                 <dd><a href="javascript:;">list 2</a></dd>
                 <dd><a href="javascript:;">超链接</a></dd>
-              </dl>
+              </dl> -->
             </li>
             <li class="layui-nav-item">
               <a href="javascript:;">click menu item</a>
@@ -89,22 +89,11 @@
           </ul>
         </div>
       </div>
-      <div class="layui-body">
+      <div class="layui-body" style="padding-bottom:0;">
         <!-- 内容主体区域 -->
-        <div style="padding: 15px">
-          <blockquote class="layui-elem-quote layui-text">
-            Layui 框体布局内容主体区域
-          </blockquote>
-          <div class="layui-card layui-panel">
-            <div class="layui-card-header">
-              下面是充数内容，为的是出现滚动条
-            </div>
-            <div class="layui-card-body">
-              充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />充数内容<br />你还真滑到了底部呀
-            </div>
-          </div>
-          <br /><br />
-        </div>
+            <iframe id="iframeMain" src="" style="border:none; width:100%;height: 100%;"></iframe>
+            
+
       </div>
       <div class="layui-footer">
         <!-- 底部固定区域 -->
@@ -141,7 +130,17 @@
             });
           },
         });
+
+        // 点击后加载对应页面
+  $(".menuItem").click(function (e) {
+    e.preventDefault();
+    $("#iframeMain").attr("src", $(this).attr("href"));
+  });
+    // 默认加载第一个页面
+  $($(".menuItem")[0]).click();
       });
+
+      
     </script>
   </body>
 </html>
